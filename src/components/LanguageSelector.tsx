@@ -1,13 +1,13 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import { toast } from "@/components/ui/sonner";
 
 const languages = [
   { code: "en", name: "English" },
@@ -21,11 +21,21 @@ const languages = [
 ];
 
 const LanguageSelector = () => {
-  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const [currentLanguage, setCurrentLanguage] = useState(() => {
+    return localStorage.getItem("preferredLanguage") || "en";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("preferredLanguage", currentLanguage);
+    document.documentElement.lang = currentLanguage;
+  }, [currentLanguage]);
 
   const handleLanguageChange = (langCode: string) => {
     setCurrentLanguage(langCode);
-    // In a real application, you would implement language switching functionality
+    toast.success(`Language changed to ${languages.find(lang => lang.code === langCode)?.name}`);
+    
+    // Here you would typically integrate with a translation service
+    // For now, we'll just show a message that it's a demo
     console.log(`Language changed to: ${langCode}`);
   };
 
@@ -37,7 +47,7 @@ const LanguageSelector = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="flex items-center space-x-1 text-legal-darkgray hover:text-legal-navy hover:bg-legal-lightgray">
-          <span className="mr-1 text-xs">🌐</span>
+          <span className="mr-1 text-base">🌐</span>
           <span>{getCurrentLanguageName()}</span>
         </Button>
       </DropdownMenuTrigger>
