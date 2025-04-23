@@ -1,6 +1,4 @@
-
 import { useEffect, useRef } from 'react';
-import { Gavel } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
@@ -54,32 +52,49 @@ const HeroSection = () => {
           </div>
           
           <div className="md:w-1/2 flex justify-center items-center">
-            <div className="relative w-64 h-64 flex items-center justify-center">
-              {/* Gavel base */}
-              <div className="absolute bottom-16 bg-legal-gold w-16 h-4 rounded-md"></div>
+            <div className="relative w-72 h-72 flex items-center justify-center">
+              <div className="absolute bottom-16 w-24 h-6 bg-gradient-to-r from-[#8B4513] to-[#A0522D] rounded-lg shadow-lg"></div>
               
-              {/* Gavel animation container */}
               <div 
                 ref={gavelRef} 
                 className="absolute origin-bottom-right transform rotate-0 transition-transform"
-                style={{ bottom: '4rem', right: '8.5rem' }}
+                style={{ bottom: '4rem', right: '9rem' }}
               >
-                {/* Gavel handle */}
-                <div className="w-48 h-3 bg-legal-darkgray rounded-full"></div>
+                <div className="relative">
+                  <div className="w-56 h-4 bg-gradient-to-r from-[#8B4513] to-[#A0522D] rounded-full shadow-md"></div>
+                  
+                  <div className="absolute top-0 left-4 w-24 h-4 flex space-x-2">
+                    {[...Array(4)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="w-4 h-4 bg-[#5C3317] opacity-20 rounded-full"
+                      ></div>
+                    ))}
+                  </div>
+                </div>
                 
-                {/* Gavel head */}
-                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-12 h-10 bg-legal-navy rounded-sm"></div>
+                <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                  <div className="w-16 h-14 bg-gradient-to-r from-[#8B4513] to-[#A0522D] rounded-md shadow-lg">
+                    <div className="absolute inset-2 flex flex-col space-y-1">
+                      {[...Array(3)].map((_, i) => (
+                        <div 
+                          key={i} 
+                          className="h-px bg-[#5C3317] opacity-20"
+                        ></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              {/* Circle background */}
-              <div className="absolute inset-0 border-4 border-legal-navy rounded-full"></div>
-              <div className="absolute inset-8 border-2 border-legal-gold rounded-full opacity-50"></div>
+              <div className="absolute inset-0 border-4 border-legal-navy rounded-full opacity-20"></div>
+              <div className="absolute inset-8 border-2 border-legal-gold rounded-full opacity-10"></div>
+              <div className="absolute inset-12 border border-legal-navy rounded-full opacity-5"></div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Decorative background elements */}
       <div className="absolute top-20 right-20 w-32 h-32 bg-legal-navy bg-opacity-5 rounded-full"></div>
       <div className="absolute bottom-20 left-20 w-24 h-24 bg-legal-gold bg-opacity-5 rounded-full"></div>
     </section>
