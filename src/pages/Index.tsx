@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen flex flex-col backdrop-blur-[2px]">
       <Header />
       <main>
         <HeroSection />
@@ -24,3 +24,4 @@ const Index = () => {
 };
 
 export default Index;
+
