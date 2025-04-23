@@ -46,18 +46,27 @@ const LanguageSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="flex items-center space-x-1 text-legal-darkgray hover:text-legal-navy hover:bg-legal-lightgray">
-          <span className="mr-1 text-base">🌐</span>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="flex items-center space-x-1 text-legal-darkgray hover:text-legal-navy hover:bg-legal-lightgray transition-all duration-200 hover:scale-105"
+        >
+          <span className="mr-1 text-base transition-transform duration-200 hover:rotate-12">🌐</span>
           <span>{getCurrentLanguageName()}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-lg">
+      <DropdownMenuContent 
+        align="end" 
+        className="bg-white border border-gray-200 shadow-lg animate-in slide-in-from-top-2 duration-200"
+      >
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
-            className={`cursor-pointer ${
-              currentLanguage === language.code ? "bg-legal-lightgray font-medium" : ""
+            className={`cursor-pointer transition-colors duration-200 ${
+              currentLanguage === language.code 
+                ? "bg-legal-lightgray font-medium" 
+                : "hover:bg-legal-lightgray/50"
             }`}
           >
             {language.name}
