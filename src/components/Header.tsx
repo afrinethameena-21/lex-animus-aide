@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,20 +22,21 @@ const Header = () => {
             <span className="text-xl font-bold text-legal-navy">Nyayasethu</span>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <nav className="flex items-center space-x-6">
+          {/* Desktop Navigation and Search */}
+          <div className="hidden md:flex items-center">
+            {/* Search Bar */}
+            <SearchBar className="w-64 mt-0 mr-8" />
+            
+            {/* Navigation */}
+            <nav className="flex items-center space-x-6 mr-8">
               <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
               <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
               <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
               <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
             </nav>
 
-            {/* Desktop Search */}
-            <SearchBar className="w-64" />
-
             {/* Auth Buttons */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mr-4">
               <Button variant="outline" className="border-legal-navy text-legal-navy hover:bg-legal-navy hover:text-white">
                 Log In
               </Button>
