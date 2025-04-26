@@ -1,4 +1,4 @@
-
+import React from "react";
 import { Gavel } from "lucide-react";
 
 const Footer = () => {
@@ -8,8 +8,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <Gavel className="h-6 w-6 text-legal-gold" />
-              <span className="text-xl font-bold">Know Your Rights</span>
+              <img 
+                src="/lovable-uploads/63bca008-a591-40ab-8f9b-a0f334e6c8d5.png" 
+                alt="Nyayasethu Logo" 
+                className="h-8 w-8"
+              />
+              <span className="text-xl font-bold">Nyayasethu</span>
             </div>
             <p className="text-gray-300 mb-4">
               Empowering individuals through legal knowledge and resources.
@@ -75,7 +79,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <p className="text-sm text-gray-400 mb-4 md:mb-0">
-              © 2025 Know Your Rights. All rights reserved.
+              © 2025 Nyayasethu. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-sm text-gray-400 hover:text-legal-gold">Privacy Policy</a>

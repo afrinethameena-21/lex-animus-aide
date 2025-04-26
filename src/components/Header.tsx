@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Gavel, Search, User } from "lucide-react";
+import { Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchBar from "./SearchBar";
@@ -14,9 +14,13 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Gavel className="h-8 w-8 text-legal-navy" />
-            <span className="text-xl font-bold text-legal-navy">Know Your Rights</span>
+          <div className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/63bca008-a591-40ab-8f9b-a0f334e6c8d5.png" 
+              alt="Nyayasethu Logo" 
+              className="h-12 w-12"
+            />
+            <span className="text-xl font-bold text-legal-navy">Nyayasethu</span>
           </div>
 
           {/* Desktop Navigation */}
