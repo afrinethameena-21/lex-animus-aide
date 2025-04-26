@@ -34,7 +34,7 @@ const Auth = () => {
       if (user) {
         localStorage.setItem("currentUser", JSON.stringify(user));
         toast.success("Login successful!");
-        navigate("/");
+        navigate("/dashboard"); // Redirect to dashboard after login
       } else {
         toast.error("Invalid email or password");
       }
@@ -60,7 +60,7 @@ const Auth = () => {
       localStorage.setItem("currentUser", JSON.stringify(newUser));
       
       toast.success("Account created successfully!");
-      navigate("/");
+      navigate("/dashboard"); // Redirect to dashboard after signup
     }
   };
 
