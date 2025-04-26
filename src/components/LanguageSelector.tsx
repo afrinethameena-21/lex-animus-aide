@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -11,13 +10,10 @@ import { toast } from "@/components/ui/sonner";
 
 const languages = [
   { code: "en", name: "English" },
-  { code: "es", name: "Español" },
-  { code: "fr", name: "Français" },
-  { code: "de", name: "Deutsch" },
-  { code: "zh", name: "中文" },
-  { code: "ar", name: "العربية" },
-  { code: "ru", name: "Русский" },
+  { code: "kn", name: "ಕನ್ನಡ" },
   { code: "hi", name: "हिन्दी" },
+  { code: "ta", name: "தமிழ்" },
+  { code: "mr", name: "मराठी" },
 ];
 
 const LanguageSelector = () => {
@@ -33,9 +29,6 @@ const LanguageSelector = () => {
   const handleLanguageChange = (langCode: string) => {
     setCurrentLanguage(langCode);
     toast.success(`Language changed to ${languages.find(lang => lang.code === langCode)?.name}`);
-    
-    // Here you would typically integrate with a translation service
-    // For now, we'll just show a message that it's a demo
     console.log(`Language changed to: ${langCode}`);
   };
 
