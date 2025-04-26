@@ -32,15 +32,28 @@ const Header = () => {
                 <Home size={20} />
                 Home
               </Link>
+              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
+              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
+              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
+              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
+            </nav>
+
+            {/* Auth/Profile Section */}
+            <div className="flex items-center space-x-2">
               {currentUser ? (
                 <HoverCard>
                   <HoverCardTrigger asChild>
-                    <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
+                    <Button 
+                      variant="ghost"
+                      className="flex items-center gap-2"
+                      onClick={() => navigate("/dashboard")}
+                    >
                       <UserRound size={20} />
                       Profile
-                    </Link>
+                    </Button>
                   </HoverCardTrigger>
-                  <HoverCardContent className="w-auto">
+                  <HoverCardContent className="w-auto p-4">
                     <div className="flex flex-col gap-2">
                       <p className="text-sm font-medium">User ID: {currentUser.id}</p>
                       <p className="text-sm">{currentUser.email}</p>
@@ -48,19 +61,6 @@ const Header = () => {
                   </HoverCardContent>
                 </HoverCard>
               ) : (
-                <>
-                  <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
-                  <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
-                  <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
-                  <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
-                  <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
-                </>
-              )}
-            </nav>
-
-            {/* Auth Buttons */}
-            <div className="flex items-center space-x-2">
-              {!currentUser && (
                 <>
                   <Button 
                     variant="outline" 
@@ -107,32 +107,32 @@ const Header = () => {
                 <Home size={20} />
                 Home
               </Link>
-              {currentUser ? (
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
-                      <UserRound size={20} />
-                      Profile
-                    </Link>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto">
-                    <div className="flex flex-col gap-2">
-                      <p className="text-sm font-medium">User ID: {currentUser.id}</p>
-                      <p className="text-sm">{currentUser.email}</p>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              ) : (
-                <>
-                  <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
-                  <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
-                  <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
-                  <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
-                  <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
-                </>
-              )}
+              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
+              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
+              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
+              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
             </nav>
-            {!currentUser && (
+            {currentUser ? (
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <Button 
+                    variant="ghost"
+                    className="flex items-center gap-2 w-full justify-start"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    <UserRound size={20} />
+                    Profile
+                  </Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-auto p-4">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-medium">User ID: {currentUser.id}</p>
+                    <p className="text-sm">{currentUser.email}</p>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            ) : (
               <div className="flex space-x-2">
                 <Button 
                   variant="outline" 
