@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
   const gavelRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const gavelElement = gavelRef.current;
@@ -42,7 +44,10 @@ const HeroSection = () => {
               Access expert legal resources, understand your rights, and get the guidance you need to navigate the legal system with confidence.
             </p>
             <div className="flex space-x-4">
-              <Button className="bg-legal-navy hover:bg-opacity-90 text-white px-6 py-3 text-lg">
+              <Button 
+                className="bg-legal-navy hover:bg-opacity-90 text-white px-6 py-3 text-lg"
+                onClick={() => navigate('/auth')}
+              >
                 Get Started
               </Button>
               <Button variant="outline" className="border-legal-navy text-legal-navy hover:bg-legal-navy hover:text-white px-6 py-3 text-lg">
