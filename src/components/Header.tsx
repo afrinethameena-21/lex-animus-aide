@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -43,11 +42,10 @@ const Header = () => {
             <div className="flex items-center space-x-2">
               {currentUser ? (
                 <HoverCard>
-                  <HoverCardTrigger asChild>
+                  <HoverCardTrigger>
                     <Button 
                       variant="ghost"
                       className="flex items-center gap-2"
-                      onClick={() => navigate("/dashboard")}
                     >
                       <UserRound size={20} />
                       Profile
@@ -115,11 +113,10 @@ const Header = () => {
             </nav>
             {currentUser ? (
               <HoverCard>
-                <HoverCardTrigger asChild>
+                <HoverCardTrigger>
                   <Button 
                     variant="ghost"
                     className="flex items-center gap-2 w-full justify-start"
-                    onClick={() => navigate("/dashboard")}
                   >
                     <UserRound size={20} />
                     Profile
