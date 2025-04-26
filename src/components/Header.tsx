@@ -26,6 +26,7 @@ const Header = () => {
               <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
               <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
               <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
               <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
             </nav>
 
@@ -64,6 +65,7 @@ const Header = () => {
               <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
               <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
               <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
               <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
             </nav>
             <div className="flex space-x-2">
