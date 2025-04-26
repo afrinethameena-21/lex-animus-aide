@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Home, UserRound } from "lucide-react";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")!) : null;
 
   return (
     <header className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-50">
@@ -32,10 +33,20 @@ const Header = () => {
                 Home
               </Link>
               {currentUser ? (
-                <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
-                  <UserRound size={20} />
-                  Profile
-                </Link>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
+                      <UserRound size={20} />
+                      Profile
+                    </Link>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-auto">
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-medium">User ID: {currentUser.id}</p>
+                      <p className="text-sm">{currentUser.email}</p>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               ) : (
                 <>
                   <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
@@ -97,10 +108,20 @@ const Header = () => {
                 Home
               </Link>
               {currentUser ? (
-                <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
-                  <UserRound size={20} />
-                  Profile
-                </Link>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Link to="/dashboard" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
+                      <UserRound size={20} />
+                      Profile
+                    </Link>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-auto">
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-medium">User ID: {currentUser.id}</p>
+                      <p className="text-sm">{currentUser.email}</p>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               ) : (
                 <>
                   <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>

@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,18 +14,28 @@ const Auth = () => {
     password: "",
   });
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check if we're on login page and there are no users
+    if (location.pathname === "/auth" && isLogin) {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      if (users.length === 0) {
+        setIsLogin(false); // Switch to signup if no users exist
+        toast.info("Please sign up first as no users exist");
+      }
+    }
+  }, [location.pathname, isLogin]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     if (!formData.email || !formData.password || (!isLogin && !formData.name)) {
       toast.error("Please fill in all fields");
       return;
     }
 
     if (isLogin) {
-      // Check if user exists
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       const user = users.find((u: any) => 
         u.email === formData.email && u.password === formData.password
@@ -34,22 +44,20 @@ const Auth = () => {
       if (user) {
         localStorage.setItem("currentUser", JSON.stringify(user));
         toast.success("Login successful!");
-        navigate("/dashboard"); // Redirect to dashboard after login
+        navigate("/");
       } else {
         toast.error("Invalid email or password");
       }
     } else {
-      // Sign up
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       
-      // Check if email already exists
       if (users.some((u: any) => u.email === formData.email)) {
         toast.error("Email already exists");
         return;
       }
 
-      // Add new user
       const newUser = {
+        id: Date.now().toString(),
         name: formData.name,
         email: formData.email,
         password: formData.password
@@ -60,7 +68,7 @@ const Auth = () => {
       localStorage.setItem("currentUser", JSON.stringify(newUser));
       
       toast.success("Account created successfully!");
-      navigate("/dashboard"); // Redirect to dashboard after signup
+      navigate("/");
     }
   };
 
