@@ -24,9 +24,44 @@ const Auth = () => {
       return;
     }
 
-    // For now, just show success message and redirect
-    toast.success(isLogin ? "Login successful!" : "Account created successfully!");
-    navigate("/");
+    if (isLogin) {
+      // Check if user exists
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const user = users.find((u: any) => 
+        u.email === formData.email && u.password === formData.password
+      );
+
+      if (user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        toast.success("Login successful!");
+        navigate("/");
+      } else {
+        toast.error("Invalid email or password");
+      }
+    } else {
+      // Sign up
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      
+      // Check if email already exists
+      if (users.some((u: any) => u.email === formData.email)) {
+        toast.error("Email already exists");
+        return;
+      }
+
+      // Add new user
+      const newUser = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      };
+      
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+      
+      toast.success("Account created successfully!");
+      navigate("/");
+    }
   };
 
   return (
