@@ -1,13 +1,15 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Home, UserRound } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import LanguageSelector from "./LanguageSelector";
+import LanguageSelector, { useTranslation } from "./LanguageSelector";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const currentUser = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")!) : null;
 
   return (
@@ -29,13 +31,13 @@ const Header = () => {
             <nav className="flex items-center space-x-6">
               <Link to="/" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
                 <Home size={20} />
-                Home
+                {t("home")}
               </Link>
-              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
-              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
-              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
-              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
-              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
+              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("services")}</a>
+              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("chatbot")}</a>
+              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("news")}</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("community")}</a>
+              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("contact")}</a>
             </nav>
 
             {/* Auth/Profile Section */}
@@ -48,7 +50,7 @@ const Header = () => {
                       className="flex items-center gap-2"
                     >
                       <UserRound size={20} />
-                      Profile
+                      {t("profile")}
                     </Button>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-auto p-4">
@@ -65,13 +67,13 @@ const Header = () => {
                     className="border-legal-navy text-legal-navy hover:bg-legal-navy hover:text-white"
                     onClick={() => navigate("/auth")}
                   >
-                    Log In
+                    {t("login")}
                   </Button>
                   <Button 
                     className="bg-legal-navy hover:bg-opacity-90"
                     onClick={() => navigate("/auth")}
                   >
-                    Sign Up
+                    {t("signup")}
                   </Button>
                 </>
               )}
@@ -103,13 +105,13 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 mb-4">
               <Link to="/" className="text-legal-darkgray hover:text-legal-navy font-medium flex items-center gap-2">
                 <Home size={20} />
-                Home
+                {t("home")}
               </Link>
-              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">Services</a>
-              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">Chatbot</a>
-              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">News</a>
-              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">Community</a>
-              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">Contact</a>
+              <a href="#services" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("services")}</a>
+              <a href="#chatbot" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("chatbot")}</a>
+              <a href="#news" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("news")}</a>
+              <a href="#community" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("community")}</a>
+              <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("contact")}</a>
             </nav>
             {currentUser ? (
               <HoverCard>
@@ -119,7 +121,7 @@ const Header = () => {
                     className="flex items-center gap-2 w-full justify-start"
                   >
                     <UserRound size={20} />
-                    Profile
+                    {t("profile")}
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-auto p-4">
@@ -136,13 +138,13 @@ const Header = () => {
                   className="border-legal-navy text-legal-navy hover:bg-legal-navy hover:text-white"
                   onClick={() => navigate("/auth")}
                 >
-                  Log In
+                  {t("login")}
                 </Button>
                 <Button 
                   className="bg-legal-navy hover:bg-opacity-90"
                   onClick={() => navigate("/auth")}
                 >
-                  Sign Up
+                  {t("signup")}
                 </Button>
               </div>
             )}

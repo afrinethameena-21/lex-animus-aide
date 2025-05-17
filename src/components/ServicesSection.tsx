@@ -1,38 +1,47 @@
 
 import { Gavel, FileText, MessageSquare, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-const services = [
-  {
-    title: "Legal Consultation",
-    description: "Get expert advice from our qualified attorneys on a wide range of legal matters.",
-    icon: Gavel,
-  },
-  {
-    title: "Document Review",
-    description: "Have your legal documents reviewed for accuracy, completeness, and compliance.",
-    icon: FileText,
-  },
-  {
-    title: "Legal Representation",
-    description: "Full representation services for court proceedings and legal disputes.",
-    icon: MessageSquare,
-  },
-  {
-    title: "Rights Education",
-    description: "Educational resources to help you understand your legal rights and responsibilities.",
-    icon: BookOpen,
-  },
-];
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "./LanguageSelector";
 
 const ServicesSection = () => {
+  const { t } = useTranslation();
+
+  const services = [
+    {
+      title: t("legalConsultation"),
+      description: t("consultationDescription"),
+      icon: Gavel,
+      link: "/legal-consultation"
+    },
+    {
+      title: t("documentReview"),
+      description: t("documentDescription"),
+      icon: FileText,
+      link: "/document-review"
+    },
+    {
+      title: t("legalRepresentation"),
+      description: t("representationDescription"),
+      icon: MessageSquare,
+      link: "#legal-representation"
+    },
+    {
+      title: t("rightsEducation"),
+      description: t("educationDescription"),
+      icon: BookOpen,
+      link: "#rights-education"
+    },
+  ];
+
   return (
     <section id="services" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-legal-navy mb-4">Our Services</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-legal-navy mb-4">{t("ourServices")}</h2>
           <p className="text-lg text-legal-darkgray max-w-2xl mx-auto">
-            We provide comprehensive legal services to help you navigate complex legal issues and protect your rights.
+            {t("servicesDescription")}
           </p>
         </div>
 
@@ -46,7 +55,12 @@ const ServicesSection = () => {
                 <CardTitle className="text-xl font-bold text-legal-navy">{service.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-legal-darkgray">{service.description}</CardDescription>
+                <CardDescription className="text-legal-darkgray mb-4">{service.description}</CardDescription>
+                <Link to={service.link}>
+                  <Button variant="outline" className="w-full border-legal-navy text-legal-navy hover:bg-legal-navy hover:text-white">
+                    Learn More
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
