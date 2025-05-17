@@ -25,13 +25,13 @@ const ServicesSection = () => {
       title: t("legalRepresentation"),
       description: t("representationDescription"),
       icon: MessageSquare,
-      link: "#legal-representation"
+      link: "/legal-representation"
     },
     {
       title: t("rightsEducation"),
       description: t("educationDescription"),
       icon: BookOpen,
-      link: "#rights-education"
+      link: "/rights-education"
     },
   ];
 

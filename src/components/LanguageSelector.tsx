@@ -47,7 +47,12 @@ export const translations = {
     legalRepresentation: "Legal Representation",
     representationDescription: "Full representation services for court proceedings and legal disputes.",
     rightsEducation: "Rights Education",
-    educationDescription: "Educational resources to help you understand your legal rights and responsibilities."
+    educationDescription: "Educational resources to help you understand your legal rights and responsibilities.",
+    // Add new translation keys
+    minimize: "Minimize",
+    expand: "Expand",
+    botWelcomeMessage: "Hello! I'm your legal assistant. How can I help you today?",
+    chatbotDescription: "Have questions about your legal rights? Our AI-powered legal assistant can help guide you through common legal questions."
   },
   hi: {
     home: "होम",
@@ -72,7 +77,12 @@ export const translations = {
     legalRepresentation: "कानूनी प्रतिनिधित्व",
     representationDescription: "अदालती कार्यवाही और कानूनी विवादों के लिए पूर्ण प्रतिनिधित्व सेवाएं।",
     rightsEducation: "अधिकार शिक्षा",
-    educationDescription: "आपको अपने कानूनी अधिकारों और जिम्मेदारियों को समझने में मदद करने के लिए शैक्षिक संसाधन।"
+    educationDescription: "आपको अपने कानूनी अधिकारों और जिम्मेदारियों को समझने में मदद करने के लिए शैक्षिक संसाधन।",
+    // Add new translation keys
+    minimize: "छोटा करें",
+    expand: "विस्तार करें",
+    botWelcomeMessage: "नमस्ते! मैं आपका कानूनी सहायक हूं। मैं आज आपकी कैसे मदद कर सकता हूं?",
+    chatbotDescription: "क्या आपके कानूनी अधिकारों के बारे में प्रश्न हैं? हमारा एआई-संचालित कानूनी सहायक आपको सामान्य कानूनी प्रश्नों के बारे में मार्गदर्शन कर सकता है।"
   },
   kn: {
     home: "ಹೋಮ್",
@@ -97,7 +107,12 @@ export const translations = {
     legalRepresentation: "ಕಾನೂನು ಪ್ರಾತಿನಿಧ್ಯ",
     representationDescription: "ನ್ಯಾಯಾಲಯದ ವಿಚಾರಣೆಗಳು ಮತ್ತು ಕಾನೂನು ವಿವಾದಗಳಿಗಾಗಿ ಪೂರ್ಣ ಪ್ರಾತಿನಿಧ್ಯದ ಸೇವೆಗಳು.",
     rightsEducation: "ಹಕ್ಕುಗಳ ಶಿಕ್ಷಣ",
-    educationDescription: "ನಿಮ್ಮ ಕಾನೂನು ಹಕ್ಕುಗಳು ಮತ್ತು ಜವಾಬ್ದಾರಿಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುವ ಶೈಕ್ಷಣಿಕ ಸಂಪನ್ಮೂಲಗಳು."
+    educationDescription: "ನಿಮ್ಮ ಕಾನೂನು ಹಕ್ಕುಗಳು ಮತ್ತು ಜವಾಬ್ದಾರಿಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುವ ಶೈಕ್ಷಣಿಕ ಸಂಪನ್ಮೂಲಗಳು.",
+    // Add new translation keys
+    minimize: "ಕಡಿಮೆ ಮಾಡಿ",
+    expand: "ವಿಸ್ತರಿಸಿ",
+    botWelcomeMessage: "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ ಕಾನೂನು ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಇಂದು ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
+    chatbotDescription: "ನಿಮ್ಮ ಕಾನೂನು ಹಕ್ಕುಗಳ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಮ್ಮ AI-ಸಂಚಾಲಿತ ಕಾನೂನು ಸಹಾಯಕವು ನಿಮ್ಮನ್ನು ಸಾಮಾನ್ಯ ಕಾನೂನು ಪ್ರಶ್ನೆಗಳ ಮೂಲಕ ಮಾರ್ಗದರ್ಶನ ಮಾಡಬಹುದು."
   },
   ta: {
     home: "முகப்பு",
@@ -122,7 +137,12 @@ export const translations = {
     legalRepresentation: "சட்ட பிரதிநிதித்துவம்",
     representationDescription: "நீதிமன்ற விசாரணைகள் மற்றும் சட்ட சர்ச்சைகளுக்கான முழு பிரதிநிதித்துவ சேவைகள்.",
     rightsEducation: "உரிமைகள் கல்வி",
-    educationDescription: "உங்கள் சட்ட உரிமைகள் மற்றும் பொறுப்புகளைப் புரிந்துகொள்ள உதவும் கல்வி வளங்கள்."
+    educationDescription: "உங்கள் சட்ட உரிமைகள் மற்றும் பொறுப்புகளைப் புரிந்துகொள்ள உதவும் கல்வி வளங்கள்.",
+    // Add new translation keys
+    minimize: "சுருக்கு",
+    expand: "விரிவாக்கு",
+    botWelcomeMessage: "வணக்கம்! நான் உங்கள் சட்ட உதவியாளர். இன்று உங்களுக்கு எப்படி உதவ முடியும்?",
+    chatbotDescription: "உங்கள் சட்ட உரிமைகள் குறித்து கேள்விகள் உள்ளதா? எங்களின் AI சக்தி கொண்ட சட்ட உதவியாளர் பொதுவான சட்டக் கேள்விகள் குறித்து உங்களுக்கு வழிகாட்ட உதவும்."
   },
   mr: {
     home: "होम",
@@ -147,7 +167,12 @@ export const translations = {
     legalRepresentation: "कायदेशीर प्रतिनिधित्व",
     representationDescription: "न्यायालयीन कार्यवाही आणि कायदेशीर वादांसाठी पूर्ण प्रतिनिधित्व सेवा.",
     rightsEducation: "अधिकार शिक्षण",
-    educationDescription: "तुमचे कायदेशीर अधिकार आणि जबाबदाऱ्या समजून घेण्यास मदत करण्यासाठी शैक्षणिक संसाधने."
+    educationDescription: "तुमचे कायदेशीर अधिकार आणि जबाबदाऱ्या समजून घेण्यास मदत करण्यासाठी शैक्षणिक संसाधने.",
+    // Add new translation keys
+    minimize: "कमी करा",
+    expand: "विस्तार करा",
+    botWelcomeMessage: "नमस्कार! मी तुमचा कायदेशीर सहाय्यक आहे. आज मी तुम्हाला कशी मदत करू शकतो?",
+    chatbotDescription: "तुमच्या कायदेशीर अधिकारांबद्दल प्रश्न आहेत? आमचा AI-संचालित कायदेशीर सहाय्यक तुम्हाला सामान्य कायदेशीर प्रश्नांमधून मार्गदर्शन करण्यास मदत करू शकतो."
   }
 };
 

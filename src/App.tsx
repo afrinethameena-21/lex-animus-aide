@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 import { TranslationProvider } from "./components/LanguageSelector";
 import LegalConsultation from "./pages/LegalConsultation";
 import DocumentReview from "./pages/DocumentReview";
+import LegalRepresentation from "./pages/LegalRepresentation";
+import RightsEducation from "./pages/RightsEducation";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/legal-consultation" element={<LegalConsultation />} />
             <Route path="/document-review" element={<DocumentReview />} />
+            <Route path="/legal-representation" element={<LegalRepresentation />} />
+            <Route path="/rights-education" element={<RightsEducation />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
