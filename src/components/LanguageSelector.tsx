@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -52,7 +51,8 @@ export const translations = {
     minimize: "Minimize",
     expand: "Expand",
     botWelcomeMessage: "Hello! I'm your legal assistant. How can I help you today?",
-    chatbotDescription: "Have questions about your legal rights? Our AI-powered legal assistant can help guide you through common legal questions."
+    chatbotDescription: "Have questions about your legal rights? Our AI-powered legal assistant can help guide you through common legal questions.",
+    logout: "Logout"
   },
   hi: {
     home: "होम",
@@ -82,7 +82,8 @@ export const translations = {
     minimize: "छोटा करें",
     expand: "विस्तार करें",
     botWelcomeMessage: "नमस्ते! मैं आपका कानूनी सहायक हूं। मैं आज आपकी कैसे मदद कर सकता हूं?",
-    chatbotDescription: "क्या आपके कानूनी अधिकारों के बारे में प्रश्न हैं? हमारा एआई-संचालित कानूनी सहायक आपको सामान्य कानूनी प्रश्नों के बारे में मार्गदर्शन कर सकता है।"
+    chatbotDescription: "क्या आपके कानूनी अधिकारों के बारे में प्रश्न हैं? हमारा एआई-संचालित कानूनी सहायक आपको सामान्य कानूनी प्रश्नों के बारे में मार्गदर्शन कर सकता है।",
+    logout: "लॉगआउट"
   },
   kn: {
     home: "ಹೋಮ್",
@@ -112,7 +113,8 @@ export const translations = {
     minimize: "ಕಡಿಮೆ ಮಾಡಿ",
     expand: "ವಿಸ್ತರಿಸಿ",
     botWelcomeMessage: "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ ಕಾನೂನು ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಇಂದು ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
-    chatbotDescription: "ನಿಮ್ಮ ಕಾನೂನು ಹಕ್ಕುಗಳ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಮ್ಮ AI-ಸಂಚಾಲಿತ ಕಾನೂನು ಸಹಾಯಕವು ನಿಮ್ಮನ್ನು ಸಾಮಾನ್ಯ ಕಾನೂನು ಪ್ರಶ್ನೆಗಳ ಮೂಲಕ ಮಾರ್ಗದರ್ಶನ ಮಾಡಬಹುದು."
+    chatbotDescription: "ನಿಮ್ಮ ಕಾನೂನು ಹಕ್ಕುಗಳ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಮ್ಮ AI-ಸಂಚಾಲಿತ ಕಾನೂನು ಸಹಾಯಕವು ನಿಮ್ಮನ್ನು ಸಾಮಾನ್ಯ ಕಾನೂನು ಪ್ರಶ್ನೆಗಳ ಮೂಲಕ ಮಾರ್ಗದರ್ಶನ ಮಾಡಬಹುದು.",
+    logout: "ಲಾಗ್ ಔಟ್"
   },
   ta: {
     home: "முகப்பு",
@@ -142,7 +144,8 @@ export const translations = {
     minimize: "சுருக்கு",
     expand: "விரிவாக்கு",
     botWelcomeMessage: "வணக்கம்! நான் உங்கள் சட்ட உதவியாளர். இன்று உங்களுக்கு எப்படி உதவ முடியும்?",
-    chatbotDescription: "உங்கள் சட்ட உரிமைகள் குறித்து கேள்விகள் உள்ளதா? எங்களின் AI சக்தி கொண்ட சட்ட உதவியாளர் பொதுவான சட்டக் கேள்விகள் குறித்து உங்களுக்கு வழிகாட்ட உதவும்."
+    chatbotDescription: "உங்கள் சட்ட உரிமைகள் குறித்து கேள்விகள் உள்ளதா? எங்களின் AI சக்தி கொண்ட சட்ட உதவியாளர் பொதுவான சட்டக் கேள்விகள் குறித்து உங்களுக்கு வழிகாட்ட உதவும்.",
+    logout: "வெளியேறு"
   },
   mr: {
     home: "होम",
@@ -172,7 +175,8 @@ export const translations = {
     minimize: "कमी करा",
     expand: "विस्तार करा",
     botWelcomeMessage: "नमस्कार! मी तुमचा कायदेशीर सहाय्यक आहे. आज मी तुम्हाला कशी मदत करू शकतो?",
-    chatbotDescription: "तुमच्या कायदेशीर अधिकारांबद्दल प्रश्न आहेत? आमचा AI-संचालित कायदेशीर सहाय्यक तुम्हाला सामान्य कायदेशीर प्रश्नांमधून मार्गदर्शन करण्यास मदत करू शकतो."
+    chatbotDescription: "तुमच्या कायदेशीर अधिकारांबद्दल प्रश्न आहेत? आमचा AI-संचालित कायदेशीर सहाय्यक तुम्हाला सामान्य कायदेशीर प्रश्नांमधून मार्गदर्शन करण्यास मदत करू शकतो.",
+    logout: "लॉगआउट"
   }
 };
 
