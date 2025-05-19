@@ -1,16 +1,60 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, UserRound } from "lucide-react";
+import { Home, UserRound, LogOut } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import LanguageSelector, { useTranslation } from "./LanguageSelector";
+import { supabase } from "@/integrations/supabase/client";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const currentUser = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")!) : null;
+
+  useEffect(() => {
+    // Check for Supabase session
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      
+      if (data.session) {
+        setCurrentUser(data.session.user);
+      } else {
+        // Fallback to localStorage for backward compatibility
+        const localUser = localStorage.getItem("currentUser");
+        if (localUser) {
+          setCurrentUser(JSON.parse(localUser));
+        } else {
+          setCurrentUser(null);
+        }
+      }
+    };
+    
+    checkSession();
+
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session) {
+          setCurrentUser(session.user);
+        } else {
+          setCurrentUser(null);
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-50">
@@ -43,23 +87,34 @@ const Header = () => {
             {/* Auth/Profile Section */}
             <div className="flex items-center space-x-2">
               {currentUser ? (
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <Button 
-                      variant="ghost"
-                      className="flex items-center gap-2"
-                    >
-                      <UserRound size={20} />
-                      {t("profile")}
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-4">
-                    <div className="flex flex-col gap-2">
-                      <p className="text-sm font-medium">User ID: {currentUser.id}</p>
-                      <p className="text-sm">{currentUser.email}</p>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                <div className="flex items-center gap-2">
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <Button 
+                        variant="ghost"
+                        className="flex items-center gap-2"
+                        onClick={() => navigate("/dashboard")}
+                      >
+                        <UserRound size={20} />
+                        {t("profile")}
+                      </Button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-auto p-4">
+                      <div className="flex flex-col gap-2">
+                        <p className="text-sm font-medium">User: {currentUser.email}</p>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="mt-2 flex items-center gap-2"
+                          onClick={handleLogout}
+                        >
+                          <LogOut size={16} />
+                          {t("logout")}
+                        </Button>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
               ) : (
                 <>
                   <Button 
@@ -114,23 +169,24 @@ const Header = () => {
               <a href="#contact" className="text-legal-darkgray hover:text-legal-navy font-medium">{t("contact")}</a>
             </nav>
             {currentUser ? (
-              <HoverCard>
-                <HoverCardTrigger>
-                  <Button 
-                    variant="ghost"
-                    className="flex items-center gap-2 w-full justify-start"
-                  >
-                    <UserRound size={20} />
-                    {t("profile")}
-                  </Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-auto p-4">
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm font-medium">User ID: {currentUser.id}</p>
-                    <p className="text-sm">{currentUser.email}</p>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+              <div className="flex flex-col space-y-2">
+                <Button 
+                  variant="outline" 
+                  className="justify-start"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  <UserRound size={20} className="mr-2" />
+                  {t("profile")}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="justify-start"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={20} className="mr-2" />
+                  {t("logout")}
+                </Button>
+              </div>
             ) : (
               <div className="flex space-x-2">
                 <Button 

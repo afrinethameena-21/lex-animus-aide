@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,58 +19,85 @@ const Auth = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Check if we're on login page and there are no users
-    if (location.pathname === "/auth" && isLogin) {
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      if (users.length === 0) {
-        setIsLogin(false); // Switch to signup if no users exist
-        toast.info("Please sign up first as no users exist");
+    // Check if user is already logged in
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate("/dashboard");
       }
-    }
-  }, [location.pathname, isLogin]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    };
     
-    if (!formData.email || !formData.password || (!isLogin && !formData.name)) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+    checkSession();
+  }, [navigate]);
 
-    if (isLogin) {
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const user = users.find((u: any) => 
-        u.email === formData.email && u.password === formData.password
-      );
-
-      if (user) {
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        toast.success("Login successful!");
-        navigate("/");
-      } else {
-        toast.error("Invalid email or password");
-      }
-    } else {
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      
-      if (users.some((u: any) => u.email === formData.email)) {
-        toast.error("Email already exists");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      if (!formData.email || !formData.password || (!isLogin && !formData.name)) {
+        toast.error("Please fill in all fields");
+        setIsLoading(false);
         return;
       }
 
-      const newUser = {
-        id: Date.now().toString(),
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      };
-      
-      users.push(newUser);
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("currentUser", JSON.stringify(newUser));
-      
-      toast.success("Account created successfully!");
-      navigate("/");
+      if (isLogin) {
+        // Sign in with Supabase
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (error) {
+          toast.error(error.message);
+          return;
+        }
+
+        if (data.user) {
+          // For backward compatibility
+          localStorage.setItem("currentUser", JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || data.user.email?.split("@")[0]
+          }));
+          
+          toast.success("Login successful!");
+          navigate("/dashboard");
+        }
+      } else {
+        // Sign up with Supabase
+        const { data, error } = await supabase.auth.signUp({
+          email: formData.email,
+          password: formData.password,
+          options: {
+            data: {
+              name: formData.name,
+            },
+          },
+        });
+
+        if (error) {
+          toast.error(error.message);
+          return;
+        }
+
+        if (data.user) {
+          // For backward compatibility
+          localStorage.setItem("currentUser", JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: formData.name
+          }));
+          
+          toast.success("Account created successfully! You can now log in.");
+          navigate("/dashboard");
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Authentication failed");
+      console.error("Auth error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -98,6 +127,7 @@ const Auth = () => {
                   setFormData({ ...formData, name: e.target.value })
                 }
                 placeholder="Enter your name"
+                disabled={isLoading}
               />
             </div>
           )}
@@ -112,6 +142,7 @@ const Auth = () => {
                 setFormData({ ...formData, email: e.target.value })
               }
               placeholder="Enter your email"
+              disabled={isLoading}
             />
           </div>
 
@@ -125,11 +156,16 @@ const Auth = () => {
                 setFormData({ ...formData, password: e.target.value })
               }
               placeholder="Enter your password"
+              disabled={isLoading}
             />
           </div>
 
-          <Button type="submit" className="w-full bg-legal-navy hover:bg-opacity-90">
-            {isLogin ? "Sign In" : "Sign Up"}
+          <Button 
+            type="submit" 
+            className="w-full bg-legal-navy hover:bg-opacity-90"
+            disabled={isLoading}
+          >
+            {isLoading ? "Processing..." : isLogin ? "Sign In" : "Sign Up"}
           </Button>
         </form>
 
@@ -138,6 +174,7 @@ const Auth = () => {
             type="button"
             onClick={() => setIsLogin(!isLogin)}
             className="text-legal-navy hover:underline"
+            disabled={isLoading}
           >
             {isLogin
               ? "Don't have an account? Sign up"
