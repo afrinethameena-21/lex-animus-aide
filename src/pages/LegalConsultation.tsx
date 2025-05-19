@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,9 +11,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { supabase } from "@/integrations/supabase/client";
 
 const timeSlots = [
   "09:00 AM", "10:00 AM", "11:00 AM", 
@@ -45,6 +46,22 @@ const LegalConsultation = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState<Date>();
   const [timeSlot, setTimeSlot] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        toast.error("Please sign in to book a consultation");
+        navigate("/auth");
+      } else {
+        setUser(data.session.user);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -58,15 +75,72 @@ const LegalConsultation = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    toast.success("Consultation booked successfully! We will contact you shortly.");
+  const onSubmit = async (data: FormValues) => {
+    if (!user) {
+      toast.error("You must be logged in to book a consultation");
+      navigate("/auth");
+      return;
+    }
+
+    setIsSubmitting(true);
     
-    // In a real application, this would send data to a backend
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+    try {
+      // Format date to match our database schema
+      const formattedDate = data.date ? format(data.date, 'yyyy-MM-dd') : '';
+
+      const { error } = await supabase
+        .from('consultations')
+        .insert({
+          user_id: user.id,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          lawyer_type: data.lawyerType,
+          date: formattedDate,
+          time: data.time,
+          details: data.details || null
+        });
+
+      if (error) {
+        console.error("Error booking consultation:", error);
+        toast.error("Failed to book consultation. Please try again.");
+        return;
+      }
+
+      toast.success("Consultation booked successfully! We will contact you shortly.");
+      
+      // Redirect to dashboard after successful booking
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  // Pre-fill form with user data if available
+  useEffect(() => {
+    if (user) {
+      const fetchUserProfile = async () => {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (!error && profile) {
+          form.setValue('name', profile.name || '');
+          form.setValue('email', user.email || '');
+          form.setValue('phone', profile.phone || '');
+        }
+      };
+      
+      fetchUserProfile();
+    }
+  }, [user, form]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -95,6 +169,7 @@ const LegalConsultation = () => {
                               {...field}
                               className="border-gray-300 focus:border-legal-navy"
                               required
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
@@ -115,6 +190,7 @@ const LegalConsultation = () => {
                               {...field}
                               className="border-gray-300 focus:border-legal-navy"
                               required
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
@@ -135,6 +211,7 @@ const LegalConsultation = () => {
                               {...field}
                               className="border-gray-300 focus:border-legal-navy"
                               required
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
@@ -153,6 +230,7 @@ const LegalConsultation = () => {
                               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-legal-navy"
                               {...field}
                               required
+                              disabled={isSubmitting}
                             >
                               <option value="">Select type of legal help</option>
                               {lawyerTypes.map((type) => (
@@ -180,6 +258,7 @@ const LegalConsultation = () => {
                                     "w-full pl-3 text-left font-normal",
                                     !field.value && "text-muted-foreground"
                                   )}
+                                  disabled={isSubmitting}
                                 >
                                   {field.value ? (
                                     format(field.value, "PPP")
@@ -229,7 +308,7 @@ const LegalConsultation = () => {
                                     "w-full pl-3 text-left font-normal",
                                     !field.value && "text-muted-foreground"
                                   )}
-                                  disabled={!date}
+                                  disabled={!date || isSubmitting}
                                 >
                                   {field.value ? field.value : <span>Select a time</span>}
                                   <Clock className="ml-auto h-4 w-4 opacity-50" />
@@ -274,6 +353,7 @@ const LegalConsultation = () => {
                             placeholder="Please provide brief details about your legal issue"
                             className="min-h-[120px] border-gray-300 focus:border-legal-navy"
                             {...field}
+                            disabled={isSubmitting}
                           />
                         </FormControl>
                         <FormDescription>
@@ -288,8 +368,9 @@ const LegalConsultation = () => {
                     <Button 
                       type="submit" 
                       className="bg-legal-navy hover:bg-opacity-90 text-white py-2 px-6 rounded-md text-lg w-full md:w-auto"
+                      disabled={isSubmitting}
                     >
-                      Book Consultation
+                      {isSubmitting ? "Processing..." : "Book Consultation"}
                     </Button>
                   </div>
                 </form>

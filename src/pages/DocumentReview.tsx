@@ -1,14 +1,16 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Upload, Check, AlertCircle } from "lucide-react";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { supabase } from "@/integrations/supabase/client";
 
 type FormValues = {
   name: string;
@@ -28,9 +30,26 @@ const documentTypes = [
 ];
 
 const DocumentReview = () => {
+  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
+  const [user, setUser] = useState<any>(null);
+
+  // Check if user is authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        toast.error("Please sign in to submit documents for review");
+        navigate("/auth");
+      } else {
+        setUser(data.session.user);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -41,6 +60,26 @@ const DocumentReview = () => {
     },
   });
 
+  // Pre-fill form with user data if available
+  useEffect(() => {
+    if (user) {
+      const fetchUserProfile = async () => {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (!error && profile) {
+          form.setValue('name', profile.name || '');
+          form.setValue('email', user.email || '');
+        }
+      };
+      
+      fetchUserProfile();
+    }
+  }, [user, form]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setUploadStatus("idle");
@@ -49,21 +88,53 @@ const DocumentReview = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (uploadedFiles.length === 0) {
       toast.error("Please select at least one file to upload");
+      return;
+    }
+
+    if (!user) {
+      toast.error("You must be logged in to upload documents");
       return;
     }
 
     setUploading(true);
     setUploadStatus("uploading");
 
-    // Simulate upload process
-    setTimeout(() => {
-      setUploading(false);
+    try {
+      // Create folder for user using their ID
+      const folderPath = `${user.id}/`;
+      
+      // Upload each file to the user's folder
+      for (const file of uploadedFiles) {
+        const filePath = `${folderPath}${file.name}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('legal_documents')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: true
+          });
+        
+        if (uploadError) {
+          console.error('Error uploading file:', uploadError);
+          setUploadStatus("error");
+          toast.error(`Failed to upload ${file.name}`);
+          setUploading(false);
+          return;
+        }
+      }
+      
       setUploadStatus("success");
       toast.success("Files uploaded successfully");
-    }, 2000);
+    } catch (error) {
+      console.error('Unexpected error during upload:', error);
+      setUploadStatus("error");
+      toast.error("An error occurred during upload");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const removeFile = (index: number) => {
@@ -72,23 +143,49 @@ const DocumentReview = () => {
     setUploadedFiles(newFiles);
   };
 
-  const onSubmit = (data: FormValues) => {
-    if (uploadedFiles.length === 0) {
-      toast.error("Please upload at least one document for review");
+  const onSubmit = async (data: FormValues) => {
+    if (!user) {
+      toast.error("You must be logged in to submit documents for review");
+      navigate("/auth");
       return;
     }
 
-    console.log("Form submitted:", data);
-    console.log("Files:", uploadedFiles);
+    if (uploadedFiles.length === 0 || uploadStatus !== "success") {
+      toast.error("Please upload at least one document for review and confirm the upload");
+      return;
+    }
 
-    toast.success("Your document review request has been submitted successfully!");
-    
-    // In a real application, this would send data to a backend
-    setTimeout(() => {
-      setUploadedFiles([]);
-      form.reset();
-      setUploadStatus("idle");
-    }, 2000);
+    try {
+      // Save document review request to database
+      const { error } = await supabase
+        .from('document_reviews')
+        .insert({
+          user_id: user.id,
+          name: data.name,
+          email: data.email,
+          document_type: data.documentType,
+          details: data.details || null
+        });
+
+      if (error) {
+        console.error("Error submitting document review:", error);
+        toast.error("Failed to submit document review. Please try again.");
+        return;
+      }
+
+      toast.success("Your document review request has been submitted successfully!");
+      
+      // Redirect to dashboard after successful submission
+      setTimeout(() => {
+        setUploadedFiles([]);
+        form.reset();
+        setUploadStatus("idle");
+        navigate("/dashboard");
+      }, 2000);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
   const getUploadStatusIcon = () => {

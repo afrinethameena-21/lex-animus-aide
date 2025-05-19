@@ -9,7 +9,144 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      consultations: {
+        Row: {
+          created_at: string
+          date: string
+          details: string | null
+          email: string
+          id: string
+          lawyer_type: string
+          name: string
+          phone: string
+          status: string
+          time: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          details?: string | null
+          email: string
+          id?: string
+          lawyer_type: string
+          name: string
+          phone: string
+          status?: string
+          time: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          details?: string | null
+          email?: string
+          id?: string
+          lawyer_type?: string
+          name?: string
+          phone?: string
+          status?: string
+          time?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          subject: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          subject: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          subject?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      document_reviews: {
+        Row: {
+          created_at: string
+          details: string | null
+          document_type: string
+          email: string
+          id: string
+          name: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          document_type: string
+          email: string
+          id?: string
+          name: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          document_type?: string
+          email?: string
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

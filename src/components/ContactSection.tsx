@@ -1,9 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Mail, Phone, MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const ContactSection = () => {
     subject: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -22,18 +24,49 @@ const ContactSection = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would submit the form data to your backend
-    console.log("Form submitted:", formData);
-    alert("Thank you! Your message has been sent successfully.");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
+    setIsSubmitting(true);
+    
+    try {
+      // Get current authenticated user if any
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session?.user?.id;
+      
+      // Insert contact message to Supabase
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null, // Handle empty phone
+          subject: formData.subject,
+          message: formData.message,
+          user_id: userId || null // Link to user if authenticated
+        });
+
+      if (error) {
+        console.error("Error submitting contact form:", error);
+        toast.error("Failed to send message. Please try again.");
+        return;
+      }
+
+      toast.success("Thank you! Your message has been sent successfully.");
+      
+      // Reset the form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,6 +96,7 @@ const ContactSection = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div className="space-y-2">
@@ -77,6 +111,7 @@ const ContactSection = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
               </div>
@@ -92,6 +127,7 @@ const ContactSection = () => {
                     placeholder="(123) 456-7890"
                     value={formData.phone}
                     onChange={handleChange}
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div className="space-y-2">
@@ -105,6 +141,7 @@ const ContactSection = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
               </div>
@@ -122,14 +159,16 @@ const ContactSection = () => {
                   onChange={handleChange}
                   required
                   className="resize-none"
+                  disabled={isSubmitting}
                 />
               </div>
               
               <Button 
                 type="submit" 
                 className="w-full bg-legal-navy hover:bg-opacity-90 text-white"
+                disabled={isSubmitting}
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>
